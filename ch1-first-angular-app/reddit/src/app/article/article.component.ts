@@ -1,4 +1,5 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import { Article } from './article.model';
 
 @Component({
   selector: 'app-article',
@@ -13,17 +14,16 @@ export class ArticleComponent implements OnInit {
   // By using the @HostBinding decorator, we’re able to configure our host element from within the component.
   @HostBinding('attr.class') cssClass = 'row'
 
-  title: string = 'Angular'
-  link: string = 'https://angular.io'
-  votes: number = 10
+  @Input() article: Article
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
 
   voteUp(): boolean {
-    this.votes++
+    this.article.voteUp()
     // Return false to tell the browser NOT to propagate the click event upwards.
     // Otherwise Javascript will propagate the click event to all the parent components.
     // Here if the click event is propagated to parents (the <a> tag), our browser will try to follow the empty link, which tells the browser to reload.
@@ -31,7 +31,7 @@ export class ArticleComponent implements OnInit {
   }
 
   voteDown(): boolean {
-    this.votes--
+    this.article.voteDown()
     // Return false to tell the browser NOT to propagate the click event upwards.
     return false
   }
